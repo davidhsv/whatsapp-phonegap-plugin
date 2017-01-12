@@ -18,13 +18,12 @@ public class Whatsapp extends CordovaPlugin {
         try {
             if (ACTION_WHATSAPP_SEND.equals(action)) {
                    String send_to = args.getString(0);
-                   Uri mUri = Uri.parse("smsto:" + send_to);
-                   Intent mIntent = new Intent(Intent.ACTION_SENDTO, mUri);
-                   mIntent.setPackage("com.whatsapp");
-                   /* mIntent.putExtra("sms_body", "The text goes here"); */
-                   mIntent.putExtra("chat",true);
-
-                   this.cordova.getActivity().startActivity(mIntent);
+             
+                   Intent sendIntent = new Intent("android.intent.action.MAIN");
+                   sendIntent.setComponent(new  ComponentName("com.whatsapp","com.whatsapp.Conversation"));
+                   sendIntent.putExtra("jid", send_to +"@s.whatsapp.net");
+                   this.cordova.getActivity().startActivity(sendIntent);
+             
                    callbackContext.success();
                    return true;
             }
