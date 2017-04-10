@@ -9,17 +9,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
-import android.annotation.CallSuper;
-import android.annotation.DrawableRes;
-import android.annotation.IdRes;
-import android.annotation.IntDef;
-import android.annotation.LayoutRes;
-import android.annotation.MainThread;
-import android.annotation.NonNull;
-import android.annotation.Nullable;
-import android.annotation.RequiresPermission;
-import android.annotation.StyleRes;
-import android.annotation.SystemApi;
 import android.app.VoiceInteractor.Request;
 import android.app.admin.DevicePolicyManager;
 import android.app.assist.AssistContent;
@@ -28,7 +17,6 @@ import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.CursorLoader;
-import android.content.IIntentSender;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
@@ -58,7 +46,6 @@ import android.os.Parcelable;
 import android.os.PersistableBundle;
 import android.os.RemoteException;
 import android.os.StrictMode;
-import android.os.SystemProperties;
 import android.os.UserHandle;
 import android.text.Selection;
 import android.text.SpannableStringBuilder;
@@ -71,9 +58,7 @@ import android.util.AttributeSet;
 import android.util.EventLog;
 import android.util.Log;
 import android.util.PrintWriterPrinter;
-import android.util.Slog;
 import android.util.SparseArray;
-import android.util.SuperNotCalledException;
 import android.view.ActionMode;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -96,20 +81,11 @@ import android.view.View.OnCreateContextMenuListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewManager;
-import android.view.ViewRootImpl;
-import android.view.Window;
-import android.view.Window.WindowControllerCallback;
-import android.view.WindowManager;
-import android.view.WindowManagerGlobal;
 import android.view.accessibility.AccessibilityEvent;
 import android.widget.AdapterView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
-import com.android.internal.app.IVoiceInteractor;
-import com.android.internal.app.ToolbarActionBar;
-import com.android.internal.app.WindowDecorActionBar;
-import com.android.internal.policy.PhoneWindow;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
@@ -130,18 +106,19 @@ public class Whatsapp extends CordovaPlugin {
              
                    this.cordova.getActivity().startActivity(new Intent("android.intent.action.VIEW",
                         Uri.parse("https://api.whatsapp.com/send?phone=" + send_to)));
-
-                    try {
-                        View currentFocus = getCurrentFocus();
-                        if (currentFocus != null) {
-                            ((InputMethodManager) getSystemService("input_method")).hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
-                        }
-                        callbackContext.success();
-                        return true;
-                    } catch (Exception e2) {
-                        callbackContext.success();
-                        return true;
-                    }
+                    callbackContext.success();  
+                    return true;
+                    // try {
+                    //     View currentFocus = this.cordova.getActivity().getCurrentFocus();
+                    //     if (currentFocus != null) {
+                    //         ((InputMethodManager) getSystemService("input_method")).hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
+                    //     }
+                    //     callbackContext.success();
+                    //     return true;
+                    // } catch (Exception e2) {
+                    //     callbackContext.success();
+                    //     return true;
+                    // }
                    
             }
             callbackContext.error("Invalid action");
