@@ -19,13 +19,21 @@ public class Whatsapp extends CordovaPlugin {
             if (ACTION_WHATSAPP_SEND.equals(action)) {
                    String send_to = args.getString(0);
              
-                   Intent sendIntent = new Intent("android.intent.action.MAIN");
-                   sendIntent.setComponent(new  ComponentName("com.whatsapp","com.whatsapp.Conversation"));
-                   sendIntent.putExtra("jid", send_to +"@s.whatsapp.net");
-                   this.cordova.getActivity().startActivity(sendIntent);
-             
-                   callbackContext.success();
-                   return true;
+                   this.cordova.getActivity().startActivity(new Intent("android.intent.action.VIEW",
+                        Uri.parse("https://api.whatsapp.com/send?phone=" + destionationNumber)));
+
+                    try {
+                        View currentFocus = getCurrentFocus();
+                        if (currentFocus != null) {
+                            ((InputMethodManager) getSystemService("input_method")).hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
+                        }
+                        callbackContext.success();
+                        return true;
+                    } catch (Exception e2) {
+                        callbackContext.success();
+                        return true;
+                    }
+                   
             }
             callbackContext.error("Invalid action");
             return false;
